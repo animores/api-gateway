@@ -1,0 +1,87 @@
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-account
+          uri: ${user-service.url}
+          predicates:
+            - Path=/api/v1/account, /api/v1/account/**,
+          filters:
+            - name: AuthorizationHeaderFilter
+
+        - id: user-service-profile
+          uri: ${user-service.url}
+          predicates:
+            - Path=/api/v1/profiles, /api/v1/profiles/**
+          filters:
+            - name: AuthorizationHeaderFilter
+
+        - id: user-service-swagger
+          uri: ${user-service.url}
+          predicates:
+            - Path=/user-service/v3/api-docs, /user-service/v3/api-docs/**, /user-service/swagger-ui, /user-service/swagger-ui/**
+          filters:
+            - RewritePath=/user-service/(?<remaining>.*), /$\{remaining}
+
+        - id: pet-service
+          uri: ${pet-service.url}
+          predicates:
+            - Path=/api/v1/pets, /api/v1/pets/**, /api/v1/todos, /api/v1/todos/**
+          filters:
+            - name: AuthorizationHeaderFilter
+
+        - id: pet-service-swagger
+          uri: ${pet-service.url}
+          predicates:
+            - Path=/pet-service/v3/api-docs, /pet-service/v3/api-docs/**, /pet-service/swagger-ui, /pet-service/swagger-ui/**
+          filters:
+            - RewritePath=/pet-service/(?<remaining>.*), /$\{remaining}
+
+        - id: diary-service
+          uri: ${diary-service.url}
+          predicates:
+            - Path=/api/v1/diaries, /api/v1/diaries/**, /api/v1/diary-comments, /api/v1/diary-comments/**, /api/v1/diary-reply, /api/v1/diary-reply/**
+          filters:
+            - name: AuthorizationHeaderFilter
+
+        - id: diary-service-swagger
+          uri: ${diary-service.url}
+          predicates:
+              - Path=/diary-service/v3/api-docs, /diary-service/v3/api-docs/**, /diary-service/swagger-ui, /diary-service/swagger-ui/**
+          filters:
+              - RewritePath=/diary-service/(?<remaining>.*), /$\{remaining}
+
+  jwt:
+    secret-key: ${jwt_secret_key}
+    expiration-hours: 24
+    issuer: kangmo
+    redis:
+      host: localhost
+      port: 6379
+
+  redis:
+    host: ${redis_endpoint}
+    port: 6379
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /user-service/v3/api-docs
+        name: User Service
+        primaryName: User Service
+
+      - url: /diary-service/v3/api-docs
+        name: Diary Service
+        primaryName: Diary Service
+
+
+
