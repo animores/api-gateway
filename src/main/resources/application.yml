@@ -83,5 +83,9 @@ springdoc:
         name: Diary Service
         primaryName: Diary Service
 
+      - url: /pet-service/v3/api-docs
+        name: Pet Service
+        primaryName: Pet Service
+
 
 
