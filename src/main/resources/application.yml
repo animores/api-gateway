@@ -11,8 +11,7 @@ spring:
         - id: no-auth-user
           uri: ${user-service.url}
           predicates:
-            - Path=/api/v1/account/sign-up, /api/v1/account/sign-in, /api/v1/account/refresh, /api/v1/account/check-email/**,
-            - Path=/api/v1/account/email-auth-verify, /api/v1/account/email-auth-create, /api/v1/account/check-nickname/**,
+            - Path=/api/v1/account/sign-up, /api/v1/account/sign-in, /api/v1/account/refresh, /api/v1/account/check-email/**, /api/v1/account/email-auth-verify, /api/v1/account/email-auth-create, /api/v1/account/check-nickname/**,
 
         - id: user-service-account
           uri: ${user-service.url}
